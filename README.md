@@ -17,8 +17,8 @@
 
 ### Login 
 The entry point. You just need to have a Google Account to create a new room using a unique room ID. You can also join an existing room using an existing room ID provided by your friends.
-<img width="510" height="406" alt="image" src="https://github.com/user-attachments/assets/79780c71-f589-40ac-a38f-27c8c7f2ec52" />
 
+<img width="510" height="406" alt="image" src="https://github.com/user-attachments/assets/79780c71-f589-40ac-a38f-27c8c7f2ec52" />
 
 ### Lobby
 Where the host configures the session before it starts — set the timer duration for each problem, max number of problems in one session(depending on no of participants, note: once selected this no cant be changed during the whole game session), and see who's joined. Participants wait in the lobby until the host starts the session.
