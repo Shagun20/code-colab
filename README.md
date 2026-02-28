@@ -23,6 +23,7 @@ The entry point. You just need to have a Google Account to create a new room usi
 ### Lobby
 Where the host configures the session before it starts — set the timer duration for each problem, max number of problems in one session(depending on no of participants, note: once selected this no cant be changed during the whole game session), and see who's joined. Participants wait in the lobby until the host starts the session.
 Once joined, one of the participants will be able to see the Problem Picking Window, where they can choose which topic they want to practice, and what difficulty.
+
 <img width="587" height="414" alt="image" src="https://github.com/user-attachments/assets/bbf29bd3-c688-4440-b927-b8ef292784de" />
 <img width="597" height="537" alt="image" src="https://github.com/user-attachments/assets/7fb49ea9-2e31-4393-a0e6-a871c3b03c4e" />
 
