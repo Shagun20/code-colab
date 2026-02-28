@@ -23,7 +23,6 @@ async function fetchTestCasesFromAI(problem, no_of_test_cases) {
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-lite",
-      // This ensures you get a clean JSON array without extra text
       generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -71,7 +70,6 @@ async function judgeCodeAI(test_cases, code, language, problem, is_run = true) {
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-lite",
-      // This ensures you get a clean JSON array without extra text
       generationConfig: { responseMimeType: "application/json" }
     });
     const run_prompt = `
@@ -130,36 +128,12 @@ async function judgeCodeAI(test_cases, code, language, problem, is_run = true) {
     const text = result.response.text();
     const cleanedText = text.replace(/```json|```/g, "").trim();
 
-    // 2. REGEX FIX: Replace "bad" control characters (newlines/tabs) 
-    // inside the string literals so JSON.parse doesn't choke.
     console.log('Evaluation complete');
     return JSON.parse(text);
-
-    //     try {
-    // const response = await openrouter.chat.send({
-    //   // Use the stable 1.5-flash or 2.0-flash via OpenRouter
-    //   model: "google/gemini-flash-1.5", 
-    //   messages: [
-    //     {
-    //       role: "user",
-    //       content: prompt,
-    //     },
-    //   ],
-    //   // This is crucial for your JSON result
-    //   response_format: { type: "json_object" }, 
-    // });
-
-    // const text = response.choices[0]?.message?.content;
-
-    // if (!text) throw new Error("Empty response from AI");
-
-    // console.log('Evaluation complete');
-    // return JSON.parse(text);
 
   } catch (error) {
     console.error("gemini Judge failed:", error);
 
-    // Fallback if quota is hit
     return {
       overallStatus: "Runtime Error",
       score: 0,
@@ -267,7 +241,6 @@ router.post('/runCode', async (req, res) => {
     // const res = await fetch(`https://ce.judge0.com/submissions/batch?tokens=${tokens.join(",")}&base64_encoded=false&fields=token,status_id,language_id`)
     // const results= await res.json();
     console.log('results', results)
-    // --- RETURN THE RESULTS HERE ---
     if (is_run)
       await runCode(roomId, results);
 

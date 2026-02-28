@@ -5,7 +5,6 @@ function ProblemScore({ roundStatus, is_driver, evaluation, onClose, onStartNext
     if (!evaluation) return null;
 
     const isAccepted = evaluation.overallStatus === "Accepted";
-    // Check if the current view is from a "Run" or a final "Submit"
 
     return (
         <div className="relative flex flex-col text-white rounded-2xl font-semibold border border-cyan-400/40 bg-[#05071a] w-full max-w-[650px] h-[80vh] shadow-2xl animate-in fade-in zoom-in duration-300 overflow-hidden">

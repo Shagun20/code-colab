@@ -7,7 +7,6 @@ const RoundHistoryPage = () => {
 
     const { roomId } = useParams();
 
-    console.log('room', roomId);
 
     const [history, setHistory] = useState([]);
 
@@ -15,12 +14,10 @@ const RoundHistoryPage = () => {
     const navigate = useNavigate();
 
 
-    // Inside your firebase service/hook
     const getSessionHistory = async (roomId) => {
 
         const data = await f.getRoomData(roomId, 'roundHistory') || [];
 
-        console.log('d', data)
         if (!data || typeof data !== "object") {
             return [];
         }
@@ -42,7 +39,6 @@ const RoundHistoryPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // Calling it exactly like your f.getRoomData pattern
             const data = await getSessionHistory(roomId);
             setHistory(data);
             setLoading(false);

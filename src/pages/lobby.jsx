@@ -12,12 +12,10 @@ function Lobby(props) {
 
     const user_id = localStorage.getItem('id') || props.user_id;
 
-    // const user_id= auth.currentUser.uuid;
 
     const { roomId } = useParams();
     const f = useFirebase();
     let list = [];
-    // This matches the ":roomId" in your Route
 
 
     const [url, seturl] = useState('');
@@ -28,7 +26,6 @@ function Lobby(props) {
     useEffect(() => {
 
         if (!roomId) {
-            console.log("roomId not ready yet");
             return;
         }
 
@@ -38,7 +35,6 @@ function Lobby(props) {
 
 
             if (gameUrl) {
-                console.log('url', gameUrl);
             }
             const gameStatus = roomData?.gameState?.gameStatus;
 
@@ -54,26 +50,22 @@ function Lobby(props) {
 
             if (roomData?.gameState?.participants_list) {
                 list = Object.values(roomData?.gameState?.participants_list)
-                // 2. Transform the object into a list
-                console.log('1', list)
 
                 if (list) {
                     const userList = list;
 
                     setParticipants(userList);
 
-                    console.log(userList);
 
                 }
             }
         });
 
         return () => {
-            console.log("Cleaning up listener...");
-            unsubscribe(); // This stops the Firebase listener
+            unsubscribe(); 
         };
 
-    }, [roomId]); // Re-run if room chnges
+    }, [roomId]); 
 
 
     useEffect(() => {
@@ -81,11 +73,9 @@ function Lobby(props) {
 
         const fetchHost = async () => {
             try {
-                // Using your existing getRoomData logic
+             
                 const host = await f.getRoomData(roomId, 'host_id');
-                console.log("Host", host);
                 setHostId(host);
-                console.log('aaa', host, user_id);
 
             } catch (error) {
                 console.error("Failed to fetch host:", error);
@@ -94,7 +84,7 @@ function Lobby(props) {
 
         fetchHost();
 
-    }, []); //runs once to fetch the host
+    }, []); 
 
 
 
@@ -102,19 +92,14 @@ function Lobby(props) {
     const [count, setCount] = useState(1);
 
 
-    // Frontend: script.js
     async function startNewGame(id) {
         try {
-            // The Handshake: Requesting the data from your API
             const response = await fetch(`http://localhost:3000/createGame?roomId=${id}`);
 
             if (!response.ok) throw new Error('Network response was not ok');
 
 
-            // Phase 3: Collaboration (The Hot Zone)
-            // Now you have your clean problems ready to display!
-            console.log(response.body);
-
+        
         } catch (error) {
             console.error("Failed to create game:", error);
         }
@@ -132,7 +117,6 @@ function Lobby(props) {
         };
 
         try {
-            // run both at the same time, don't wait for server before updating Firebase
             await Promise.all([
                 startNewGame(roomId),
                 f.updateRoomData(gameStateUpdates, roomId, ''),
@@ -164,7 +148,7 @@ function Lobby(props) {
                     <input
                         type="range"
                         min="10" max="60"
-                        value={time} // Control the input with state
+                        value={time} 
                         onChange={(e) => setTime(e.target.value)}
                         className="w-full h-1.5 bg-white/10 accent-gray-400 rounded-full cursor-pointer"
                     />
@@ -222,7 +206,6 @@ function Lobby(props) {
                     Participants
                 </h1>
 
-                {/* Divider */}
                 <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                 <div className="flex flex-col gap-2 text-white text-xl">
@@ -231,14 +214,12 @@ function Lobby(props) {
                             key={user}
                             className="flex items-center gap-3 w-full border-b border-white/10 pb-2 "
                         >
-                            {/* Dynamic Avatar based on the username for Phase 2 */}
                             <Avatar
                                 size={35}
                                 name={user}
                                 variant="beam"
                             />
 
-                            {/* Username on the same line */}
                             <span className="font-mono tracking-wide">
                                 {user}
                             </span>

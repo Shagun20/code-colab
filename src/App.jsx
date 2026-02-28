@@ -17,7 +17,6 @@ import Room from './pages/room/room'
 
 
 
-// Call the async function
 
 
 function App() {
@@ -28,11 +27,9 @@ function App() {
     const getGuestId = async () => {
       try {
         const user = await f.ensureAnonymousUser();
-        console.log("Anonymous user ensured:", user.uid);
         setUid(user.uid); 
         localStorage.setItem('id', user.uid);
         
-        // Update state with the actual ID
       } catch (error) {
         console.error("Error ensuring anonymous user:", error);
       }

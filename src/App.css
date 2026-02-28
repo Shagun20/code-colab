@@ -4,19 +4,17 @@
   text-align: center;
 }
 
-/* Fixes the "half-digit" glitch in FlipDown */
 .flipdown .rotor,
 .flipdown .rotor-leaf,
 .flipdown .rotor-leaf-front,
 .flipdown .rotor-leaf-rear {
-  /* Prevent clipping during the flip */
+
   backface-visibility: hidden !important;
   -webkit-backface-visibility: hidden !important;
   transform-style: preserve-3d !important;
 }
 
 
-/* Ensure the navy background stays solid during flip */
 .flipdown.flipdown__theme-dark .rotor,
 .flipdown.flipdown__theme-dark .rotor-top,
 .flipdown.flipdown__theme-dark .rotor-leaf-front {
@@ -26,7 +24,6 @@
 
 
 
-/* Remove leftover spacing */
 .timer-no-labels .fcc__digit_block {
   margin-bottom: 0 !important;
 }

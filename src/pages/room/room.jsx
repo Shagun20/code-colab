@@ -119,22 +119,11 @@ function Room(props) {
 
     const handleConfirmSelection = async (selectedDifficulty, selectedTopic) => {
         updateLoading(true);
-        console.log('chosen', selectedDifficulty, selectedTopic);
         try {
 
             const response = await fetch(`http://localhost:3000/fetchProblem?roomId=${roomId}&difficulty=${selectedDifficulty}&topic=${selectedTopic}`);
 
-            // 2. Prepare updates for the Room (Phase 2: The Handshake)
-            // const gameStateUpdates = {
-            //     'gameState/currentProblem': chosenProblem,
-            //     'gameState/show_prob_screen': false, // Hide picker for everyone
-            //     'gameState/status': 'SOLVING'
-            // };
-
-            // 3. Update Firebase Room Data
-            // await f.updateRoomData(gameStateUpdates, roomId, '');
-
-            console.log("Problem selected and room updated!");
+           
             updateLoading(false);
         } catch (error) {
             console.error("Selection failed:", error);
@@ -145,7 +134,6 @@ function Room(props) {
     function updateScores() {
 
     }
-    //listen to chnges in the room -> 
 
 
 
@@ -153,15 +141,12 @@ function Room(props) {
         if (driver_id !== user_id) {
             return;
         }
-        console.log('heeloo');
 
         try {
-            // The Handshake: Requesting the data from your API
             const response = await fetch(`http://localhost:3000/nextRound?roomId=${roomId}`);
 
             if (!response.ok) throw new Error('Network response was not ok');
 
-            console.log(response);
 
         } catch (error) {
             console.error("Failed to create game:", error);
@@ -171,7 +156,6 @@ function Room(props) {
 
     const handleRunCode = async (code, selectedLang, is_run = true) => {
         // setIsRunning(true);
-        console.log('calling run api', code, selectedLang)
 
         const gameStateUpdates = {
             'gameState/roundStatus': "running",
@@ -190,7 +174,7 @@ function Room(props) {
                 body: JSON.stringify({
                     problem: activeProblem,
                     roomId: roomId,
-                    code: code, // The code from your Monaco state
+                    code: code,
                     language: selectedLang,
                     driverName: driver_uname,
                     test_case: activeProblem.sampleTestCase,
@@ -198,10 +182,9 @@ function Room(props) {
                 }),
             });
 
-            const data = await response.json(); // Await the parsing!
+            const data = await response.json(); 
 
 
-            console.log("Execution Result:", data.results);
 
 
         }
@@ -217,14 +200,11 @@ function Room(props) {
 
     useEffect(() => {
         if (!roomId) {
-            console.log("roomId not ready yet");
             return;
         }
 
-        // Subscribe and keep listening for changes
         const unsubscribe = f.subscribeToRoom(roomId, (roomData) => {
             if (!roomData || !roomData.gameState) {
-                console.log("No room data found");
                 return;
             }
 
@@ -249,7 +229,6 @@ function Room(props) {
 
                 }
 
-                // 1. Verify Participants List exists
                 if (!participantsObj) {
                     console.warn("No participants list in game state");
                     return;
@@ -257,26 +236,19 @@ function Room(props) {
 
                 setUsers(participantsObj);
 
-                // 2. Convert Object keys to Array for logic
                 const participants = Object.keys(participantsObj);
 
-                // 3. Security Guard: Kick user if they are no longer in the room
                 if (!participants.includes(user_id)) {
-                    console.log('User not in participant list');
                     alert("You have been removed or the room is closed.");
-                    // Optional: navigate('/')
                     return;
                 }
 
-                // 4. Update Driver State in real-time
-                // This will trigger automatically when the cycle updates
-                const currentDriverId = roomData.gameState.driver_id;
+                 const currentDriverId = roomData.gameState.driver_id;
 
 
                 setRoundStatus(currentStatus)
                 setDriver(currentDriverId);
-                setDriverName(participantsObj[currentDriverId]); // Handle nested object name
-                setParticipants(participants);
+                setDriverName(participantsObj[currentDriverId]);  setParticipants(participants);
 
                 if (currentStatus && currentDriverId) {
                     updateLoading(false);
@@ -295,12 +267,10 @@ function Room(props) {
 
                 }
                 if (currentStatus == 'submitted' || currentStatus == 'executed') {
-                    console.log('status updated', probResults)
                     setresults(probResults);
                     setRunning(false);
                 }
 
-                console.log("Sync successful. Driver is:", currentDriverId);
 
             } catch (error) {
                 console.error("Error processing real-time update:", error);
@@ -308,8 +278,7 @@ function Room(props) {
         });
 
         return () => {
-            console.log("Cleaning up listener...");
-            unsubscribe(); // Stop listening when component unmounts
+            unsubscribe(); 
         };
 
     }, [roomId]);
@@ -332,7 +301,7 @@ function Room(props) {
                 <ProblemPicker
                     topics={availableTopics}
                     difficulties={['Easy', 'Medium', 'Hard']}
-                    onConfirm={handleConfirmSelection} // The room functio
+                    onConfirm={handleConfirmSelection} 
 
                 ></ProblemPicker>
             </div>}
@@ -359,10 +328,9 @@ function Room(props) {
                             await startNewProblem();
                         }}
                         onClose={async () => {
-                            // Update Firebase to move everyone back to coding mode
                             const gameStateUpdates = {
                                 'gameState/roundStatus': "coding",
-                                'gameState/judgeResults': null // Optional: clear old results
+                                'gameState/judgeResults': null 
                             };
                             await f.updateRoomData(gameStateUpdates, roomId, '');
                         }}

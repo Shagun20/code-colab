@@ -32,7 +32,7 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
     const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
     const myColor = getUserColor(username);
-    const themeColor = "#22d3ee"; // ← cyan-400, matches your page
+    const themeColor = "#22d3ee"; 
 
     function drawStroke(ctx, stroke) {
         if (!stroke.points || stroke.points.length < 2) return;
@@ -144,12 +144,11 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                     className={`bg-[#11172a] rounded-xl flex flex-col border border-cyan-400/30 overflow-hidden ${center ? "w-[80%] h-[85%]" : "h-full"
                         }`}
                 >
-                    {/* HEADER */}
+                    
                     <div className="flex items-center px-4 py-5 border-b border-white/10">
                         <div className="w-6" />
                         <span className="text-white font-semibold text-center flex-1 tracking-widest text-sm">WHITEBOARD</span>
 
-                        {/* Legend */}
                         <div className="flex items-center gap-3 mr-2">
                             {Object.entries(authorColors).map(([author, color]) => (
                                 <div key={author} className="flex items-center gap-1">
@@ -166,9 +165,7 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                         )}
                     </div>
 
-                    {/* TOOLBAR */}
                     <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10 flex-wrap">
-                        {/* Your color */}
                         <div className="flex items-center gap-1.5 mr-1">
                             <svg width="20" height="8" viewBox="0 0 20 8">
                                 <path d="M0 4 Q10 0 20 4" stroke={myColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
@@ -177,7 +174,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
 
                         <div className="w-px h-4 bg-white/10" />
 
-                        {/* Tool buttons */}
                         {[TOOLS.PEN, TOOLS.ERASER].map((t) => (
                             <button
                                 key={t}
@@ -196,7 +192,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                             </button>
                         ))}
 
-                        {/* Size */}
                         <div className="flex items-center gap-2">
                             {/* <span className="text-xs">Size</span> */}
                             <input
@@ -207,7 +202,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                             <span className="text-xs w-4" style={{ color: themeColor }}>{lineWidth}</span>
                         </div>
 
-                        {/* Clear */}
                         <button
                             onClick={clearBoard}
                             className="ml-auto text-xs px-3 py-1 rounded-md border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 cursor-pointer transition-all"
@@ -215,7 +209,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                             Clear
                         </button>
 
-                        {/* Close → back to editor */}
                         <button
                             onClick={onClose}
                             className="text-xs px-3 py-1 rounded-md border border-white/10 text-white/50 hover:text-white cursor-pointer transition-all"
@@ -224,7 +217,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                         </button>
                     </div>
 
-                    {/* CANVAS */}
                     <div className="relative flex-1 overflow-hidden">
                         <canvas
                             ref={canvasRef}
@@ -250,7 +242,6 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                             }}
                         />
 
-                        {/* Floating username label while drawing */}
                         {drawing && tool === TOOLS.PEN && (
                             <div
                                 className="fixed pointer-events-none z-[999] flex items-center gap-1"

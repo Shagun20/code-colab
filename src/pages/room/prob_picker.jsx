@@ -16,7 +16,6 @@ function ProblemPicker({ topics, difficulties, onConfirm }) {
 
             <h3 className="text-sm text-center text-white/70 shrink-0">Select Topic</h3>
 
-            {/* Single scrollable topic grid */}
             <div
                 className="flex flex-wrap gap-2 overflow-y-auto pr-1 flex-1 min-h-0"
                 style={{

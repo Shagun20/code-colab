@@ -13,7 +13,6 @@ function Problem({ title, question, onFocus, center }) {
   
   const pElement = document.getElementById("question");
 
-  // 2. Set its innerHTML property to new content
   return (
     <div
       onClick={!center ? onFocus : undefined}

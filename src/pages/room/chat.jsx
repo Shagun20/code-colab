@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './scrollbar.css'; // Ensure your custom scrollbar styles are imported
+import './scrollbar.css'; 
 import Avatar from "boring-avatars";
 import { useFirebase } from "../../services/firebase";
 import VoiceChat from "./voicechat";
@@ -12,14 +12,11 @@ function Chat({ roomId, onFocus, center, onClose, participants = ['G', 'H'] }) {
 
     useEffect(() => {
         if (!roomId) {
-            console.log("roomId not ready yet");
             return;
         }
 
-        // Subscribe and keep listening for changes
         const unsubscribe = f.subscribeToChat(roomId, (msg) => {
             if (!msg) {
-                console.log("No editor data found");
                 return;
             }
 
@@ -27,7 +24,6 @@ function Chat({ roomId, onFocus, center, onClose, participants = ['G', 'H'] }) {
 
                 setMessages((prev) => [...prev, msg]);
 
-                //we push { writtenBy: updatedAt: msg: writtenById:}
 
 
 
@@ -37,8 +33,7 @@ function Chat({ roomId, onFocus, center, onClose, participants = ['G', 'H'] }) {
         });
 
         return () => {
-            console.log("Cleaning up listener...");
-            unsubscribe(); // Stop listening when component unmounts
+            unsubscribe(); 
         };
 
     }, [roomId]);
@@ -115,10 +110,8 @@ function Chat({ roomId, onFocus, center, onClose, participants = ['G', 'H'] }) {
                         {msgs.map((msg) => {
                             const is_me = msg.sender_id === user_id;
 
-                            // 1. You MUST return the JSX inside a map with curly braces
                             return (
                                 <div
-                                    // 2. Use a unique key from the message object
                                     key={msg.timestamp}
                                     className={`flex flex-shrink-0 items-start gap-2 px-4 py-1 rounded-xl transition-all
                     ${is_me ? "flex-row-reverse" : "flex-row"}
@@ -126,7 +119,7 @@ function Chat({ roomId, onFocus, center, onClose, participants = ['G', 'H'] }) {
                                 >
                                     <Avatar
                                         size={28}
-                                        name={msg.sender} // Use the sender name from the message object
+                                        name={msg.sender} 
                                         variant="beam"
                                     />
 

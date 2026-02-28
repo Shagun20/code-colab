@@ -5,7 +5,6 @@ import { Mic, MicOff, PhoneCall, PhoneOff, Volume2, VolumeX } from "lucide-react
 
 const DB = () => getDatabase();
 
-// ─── Firebase helpers ─────────────────────────────────────────────────────────
 
 async function sendSignal(roomId, fromId, toId, signal) {
     await set(
@@ -26,7 +25,6 @@ async function removePresence(roomId, userId) {
     await remove(ref(DB(), `root/liveContent/${roomId}/voice/signals/${userId}`));
 }
 
-// Get ALL current presence entries (snapshot), returns { userId: { username } }
 function getPresenceOnce(roomId, callback) {
     const presenceRef = ref(DB(), `root/liveContent/${roomId}/voice/presence`);
     const unsub = onValue(presenceRef, (snap) => {
@@ -35,44 +33,38 @@ function getPresenceOnce(roomId, callback) {
     return unsub;
 }
 
-// Listen for NEW people joining AFTER us
 function subscribeToNewPresence(roomId, callback) {
     const presenceRef = ref(DB(), `root/liveContent/${roomId}/voice/presence`);
-    // onChildAdded returns unsubscribe directly
     return onChildAdded(presenceRef, (snap) => {
         callback({ userId: snap.key, ...snap.val() });
     });
 }
 
-// Listen for signals addressed to us
 function subscribeToSignals(roomId, userId, callback) {
     const sigRef = ref(DB(), `root/liveContent/${roomId}/voice/signals/${userId}`);
     return onChildAdded(sigRef, (snap) => {
         try {
             callback({ fromId: snap.key, signal: JSON.parse(snap.val()) });
         } catch (_) {}
-        remove(snap.ref); // clean up after reading
+        remove(snap.ref); 
     });
 }
 
-// ─── VoiceChat Component ──────────────────────────────────────────────────────
 export default function VoiceChat({ roomId, userId, username }) {
     const [active, setActive] = useState(false);
     const [muted, setMuted] = useState(false);
     const [deafened, setDeafened] = useState(false);
-    const [peers, setPeers] = useState({}); // { peerId: { username, speaking } }
+    const [peers, setPeers] = useState({}); 
     const [error, setError] = useState(null);
 
     const streamRef = useRef(null);
     const peersRef = useRef({});
     const audioRefs = useRef({});
-    const unsubsRef = useRef([]); // store all unsub fns for cleanup
+    const unsubsRef = useRef([]); 
 
-    // ── Create a SimplePeer ──────────────────────────────────────────────────
     const createPeer = (peerId, peerUsername, stream, initiator, incomingSignal = null) => {
-        if (peersRef.current[peerId]) return; // already exists
+        if (peersRef.current[peerId]) return; 
 
-        console.log(`Creating peer with ${peerUsername} (${peerId}), initiator=${initiator}`);
 
         const peer = new SimplePeer({
             initiator,
@@ -88,7 +80,6 @@ export default function VoiceChat({ roomId, userId, username }) {
 
         peersRef.current[peerId] = peer;
 
-        // Add to UI immediately so you can see them
         setPeers((prev) => ({
             ...prev,
             [peerId]: { username: peerUsername || peerId, speaking: false },
@@ -118,7 +109,6 @@ export default function VoiceChat({ roomId, userId, username }) {
         }
     };
 
-    // ── Join ─────────────────────────────────────────────────────────────────
     const join = async () => {
         setError(null);
         try {
@@ -126,25 +116,20 @@ export default function VoiceChat({ roomId, userId, username }) {
             streamRef.current = stream;
             setActive(true);
 
-            // 1. Write our presence FIRST
             await sendPresence(roomId, userId, username);
 
-            // 2. Get everyone ALREADY in the call and initiate connections to them
             getPresenceOnce(roomId, (allPresence) => {
                 Object.entries(allPresence).forEach(([peerId, data]) => {
-                    if (peerId === userId) return; // skip self
-                    createPeer(peerId, data.username, stream, true); // we initiate
+                    if (peerId === userId) return;
+                    createPeer(peerId, data.username, stream, true); 
                 });
             });
 
-            // 3. Listen for signals coming TO us (answers from peers we initiated with,
-            //    or offers from peers who join AFTER us)
+          
             const unsubSignals = subscribeToSignals(roomId, userId, ({ fromId, signal }) => {
                 if (peersRef.current[fromId]) {
-                    // Already have this peer — feed the signal
                     peersRef.current[fromId].signal(signal);
                 } else {
-                    // New peer we don't know about — they'll be in presence, find their username
                     const presenceRef = ref(DB(), `root/liveContent/${roomId}/voice/presence/${fromId}`);
                     onValue(presenceRef, (snap) => {
                         const data = snap.val();
@@ -166,7 +151,6 @@ export default function VoiceChat({ roomId, userId, username }) {
         }
     };
 
-    // ── Speaking detection ───────────────────────────────────────────────────
     const setupSpeakingDetector = (peerId, stream) => {
         try {
             const ctx = new AudioContext();
@@ -190,7 +174,6 @@ export default function VoiceChat({ roomId, userId, username }) {
         } catch (_) {}
     };
 
-    // ── Cleanup a peer ───────────────────────────────────────────────────────
     const cleanupPeer = (peerId) => {
         peersRef.current[peerId]?.destroy();
         delete peersRef.current[peerId];
@@ -203,7 +186,6 @@ export default function VoiceChat({ roomId, userId, username }) {
         });
     };
 
-    // ── Leave ────────────────────────────────────────────────────────────────
     const leave = async () => {
         streamRef.current?.getTracks().forEach((t) => t.stop());
         streamRef.current = null;
@@ -230,10 +212,8 @@ export default function VoiceChat({ roomId, userId, username }) {
 
     useEffect(() => () => { if (active) leave(); }, []);
 
-    // ─── Render ───────────────────────────────────────────────────────────────
     return (
         <div className="flex flex-col gap-2 px-3 py-2 bg-[#11172a] border border-white/10 rounded-xs">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono">Voice</span>
 
@@ -288,10 +268,8 @@ export default function VoiceChat({ roomId, userId, username }) {
 
             {error && <p className="text-[10px] text-red-400">{error}</p>}
 
-            {/* Peer list */}
             {active && (
                 <div className="flex flex-col gap-1.5">
-                    {/* Self */}
                     <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full ${muted ? "bg-red-400" : "bg-cyan-400"}`}
                             style={{ boxShadow: muted ? "none" : "0 0 5px #22d3ee" }} />
@@ -301,7 +279,6 @@ export default function VoiceChat({ roomId, userId, username }) {
                         {muted && <span className="text-[9px] text-red-400">muted</span>}
                     </div>
 
-                    {/* Remote peers */}
                     {Object.entries(peers).map(([peerId, { username: peerName, speaking }]) => (
                         <div key={peerId} className="flex items-center gap-2">
                             <div
