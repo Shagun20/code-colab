@@ -7,27 +7,26 @@ function ProblemPicker({ topics, difficulties, onConfirm }) {
 
     return (
         <div
-            className="flex flex-col text-white rounded-2xl border border-cyan-400/40 bg-[#05071a] p-5 gap-4 w-[500px]"
+            className="flex flex-col text-white rounded-2xl border border-white/10 bg-[#161b2e] p-5 gap-4 w-[500px]"
             style={{ height: "520px" }}
         >
-            <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent shrink-0">
-                Your Turn to Choose!
-            </h2>
+            <h2 className="text-2xl font-bold text-center text-white shrink-0">
+Your Turn to Choose           </h2>
 
-            <h3 className="text-sm text-center text-white/70 shrink-0">Select Topic</h3>
+            <h3 className="text-sm text-center text-white/80 shrink-0">Select Topic</h3>
 
             <div
-                className="flex flex-wrap gap-2 overflow-y-auto pr-1 flex-1 min-h-0"
+                className="flex items-center justify-center flex-wrap gap-2 overflow-y-auto pr-1 flex-1 min-h-0"
                 style={{
                     scrollbarWidth: "thin",
-                    scrollbarColor: "rgba(34,211,238,0.3) transparent",
+                    scrollbarColor: "white",
                 }}
             >
                 {topics.map(topic => (
                     <button
                         key={topic}
                         onClick={() => setSelectedTopic(topic)}
-                        className={`px-3 cursor-pointer py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 border shrink-0 ${selectedTopic === topic
+                        className={`px-3 cursor-pointer py-1.5 rounded-lg text-xs transition-all duration-200 border shrink-0 ${selectedTopic === topic
                             ? 'bg-cyan-500 border-cyan-400 text-white shadow-[0_0_12px_rgba(6,182,212,0.5)]'
                             : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
                         }`}
@@ -38,7 +37,7 @@ function ProblemPicker({ topics, difficulties, onConfirm }) {
             </div>
 
             <div className="shrink-0">
-                <h3 className="text-sm text-white/70 mb-2 text-center">Select Difficulty</h3>
+                <h3 className="text-sm text-white/80 mb-2 text-center">Select Difficulty</h3>
                 <div className="grid grid-cols-3 gap-3">
                     {difficulties.map(diff => (
                         <button

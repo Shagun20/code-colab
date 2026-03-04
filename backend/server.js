@@ -12,7 +12,10 @@ const lc = new LeetCode();
 const app = express();
 const PORT = 3000;
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+
+app.use(cors({ 
+  origin: ['http://localhost:5173', 'https://codecolab-mlt4q71f8-shagun20s-projects.vercel.app']
+}));
 app.use(express.json());
 app.use('', router);
 

@@ -215,7 +215,7 @@ export default function VoiceChat({ roomId, userId, username }) {
     return (
         <div className="flex flex-col gap-2 px-3 py-2 bg-[#11172a] border border-white/10 rounded-xs">
             <div className="flex items-center justify-between">
-                <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono">Voice</span>
+                <span className="text-[10px] text-white/40 uppercase tracking-widest">Voice</span>
 
                 <div className="flex items-center gap-1">
                     {active && (
@@ -273,7 +273,7 @@ export default function VoiceChat({ roomId, userId, username }) {
                     <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full ${muted ? "bg-red-400" : "bg-cyan-400"}`}
                             style={{ boxShadow: muted ? "none" : "0 0 5px #22d3ee" }} />
-                        <span className="text-[11px] text-cyan-400 font-mono font-bold">
+                        <span className="text-[11px] text-cyan-400 font-bold">
                             {username} (you)
                         </span>
                         {muted && <span className="text-[9px] text-red-400">muted</span>}
@@ -288,14 +288,14 @@ export default function VoiceChat({ roomId, userId, username }) {
                                     boxShadow: speaking ? "0 0 6px #22d3ee" : "none",
                                 }}
                             />
-                            <span className={`text-[11px] font-mono transition-colors ${speaking ? "text-white" : "text-white/50"}`}>
+                            <span className={`text-[11px] transition-colors ${speaking ? "text-white" : "text-white/50"}`}>
                                 {peerName}
                             </span>
                         </div>
                     ))}
 
                     {Object.keys(peers).length === 0 && (
-                        <p className="text-[10px] text-white/20 font-mono italic">Waiting for others to join...</p>
+                        <p className="text-[10px] text-white/20 italic">Waiting for others to join...</p>
                     )}
                 </div>
             )}

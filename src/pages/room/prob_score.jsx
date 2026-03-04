@@ -23,7 +23,7 @@ function ProblemScore({ roundStatus, is_driver, evaluation, onClose, onStartNext
                     </div>
                     <div className="hidden sm:block">
                         <p className="text-slate-500 text-[9px] uppercase tracking-[0.2em] font-bold mb-0.5">Status</p>
-                        <p className={`font-mono text-sm font-black ${isAccepted ? 'text-green-400' : 'text-red-500'}`}>
+                        <p className={`text-sm font-black ${isAccepted ? 'text-green-400' : 'text-red-500'}`}>
                             {isAccepted ? "PASSED" : "FAILED"}
                         </p>
                     </div>
@@ -40,7 +40,7 @@ function ProblemScore({ roundStatus, is_driver, evaluation, onClose, onStartNext
                         <div className="text-right pr-4">
                             <p className="text-slate-500 text-[9px] uppercase tracking-widest font-bold mb-0.5">Total Score</p>
                             <div className="flex items-baseline justify-end gap-1">
-                                <span className="text-3xl font-mono font-black text-cyan-400 leading-none">{evaluation.score}</span>
+                                <span className="text-3xl font-black text-cyan-400 leading-none">{evaluation.score}</span>
                                 <span className="text-[10px] text-slate-600 font-bold">/100</span>
                             </div>
                         </div>

@@ -4,6 +4,22 @@
   text-align: center;
 }
 
+@keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.text-marquee {
+    display: inline-block;
+    animation: marquee 4s linear infinite;
+    white-space: nowrap;
+}
+
+.text-bounce {
+    display: inline-block;
+    animation: bounce-x 2.5s ease-in-out infinite;
+}
+
 .flipdown .rotor,
 .flipdown .rotor-leaf,
 .flipdown .rotor-leaf-front,

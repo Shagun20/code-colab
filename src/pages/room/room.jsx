@@ -121,7 +121,7 @@ function Room(props) {
         updateLoading(true);
         try {
 
-            const response = await fetch(`http://localhost:3000/fetchProblem?roomId=${roomId}&difficulty=${selectedDifficulty}&topic=${selectedTopic}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/fetchProblem?roomId=${roomId}&difficulty=${selectedDifficulty}&topic=${selectedTopic}`);
 
            
             updateLoading(false);
@@ -143,7 +143,7 @@ function Room(props) {
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/nextRound?roomId=${roomId}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/nextRound?roomId=${roomId}`);
 
             if (!response.ok) throw new Error('Network response was not ok');
 
@@ -166,7 +166,7 @@ function Room(props) {
 
 
         try {
-            const response = await fetch(`http://localhost:3000/runCode`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/runCode`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

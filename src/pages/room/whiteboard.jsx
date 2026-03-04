@@ -147,7 +147,7 @@ export default function Whiteboard({ roomId, username, center, onFocus, onClose 
                     
                     <div className="flex items-center px-4 py-5 border-b border-white/10">
                         <div className="w-6" />
-                        <span className="text-white font-semibold text-center flex-1 tracking-widest text-sm">WHITEBOARD</span>
+                        <span className="text-white font-bold text-center tracking-wide flex-1 text-lg">WHITEBOARD</span>
 
                         <div className="flex items-center gap-3 mr-2">
                             {Object.entries(authorColors).map(([author, color]) => (
